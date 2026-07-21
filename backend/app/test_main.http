@@ -1,13 +1,37 @@
-GET http://localhost:8000/fruits
+# Greeting test
+GET http://localhost:8000/greeting
 Accept: application/json
 
 ###
-POST http://localhost:8000/fruits 
+# Message tests
+GET http://localhost:8000/messages
+Accept: application/json
+
+###
+POST http://localhost:8000/messages 
 Content-Type: application/json
 
 {
-    "name": "Pear"
+    "name": "hello!"
 }
 
 ###
+# Status tests
+GET http://localhost:8000/status
+Accept: application/json
+
+###
+PUT http://localhost:8000/status 
+Content-Type: application/json
+
+{
+    "status": "sick"
+}
+###
+PUT http://localhost:8000/status 
+Content-Type: application/json
+
+{
+    "status": "healthy"
+}
 ###

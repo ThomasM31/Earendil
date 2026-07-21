@@ -4,11 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 
-class Fruit(BaseModel):
+class Status(BaseModel):
+    status: str
+
+class Message(BaseModel):
     name: str
 
-class Fruits(BaseModel):
-    fruits: List[Fruit]
+class Messages(BaseModel):
+    messages: List[Message]
 
 app = FastAPI()
 
@@ -24,23 +27,45 @@ app.add_middleware(
     allow_headers=["*"],
                    )
 
-memory_db = {"fruits": []}
+memory_db = {
+    "greeting": "Research Assistant API",
+    "status": "healthy",
+    "messages": [],
+            }
 
 # Check available methods
-for route in app.routes:
-    print(route.path, route.methods)
-
-# Define functionality
-@app.get("/fruits", response_model=Fruits)
-def get_fruits():
-    return Fruits(fruits=memory_db["fruits"])
-
-@app.post("/fruits", response_model=Fruit)
-def add_fruit(fruit: Fruit):
-    memory_db["fruits"].append(fruit)
-    return fruit
+#for route in app.routes:
+#    print(route.path, route.methods)
 
 # @app: POST, GET, DELETE, PUT
+
+# Define GET-functionality
+@app.get("/greeting", response_model=Message)
+def get_greeting():
+    return Message(name=memory_db["greeting"])
+
+@app.get("/messages", response_model=Messages)
+def get_messages():
+    return Messages(messages=memory_db["messages"])
+
+@app.get("/status", response_model=Status)
+def get_status():
+    return Status(status=memory_db["status"])
+
+
+# Define POST-functionality
+@app.post("/messages", response_model=Message)
+def add_message(message: Message):
+    memory_db["messages"].append(message)
+    return message
+
+
+# Define PUT-functionality
+@app.put("/status", response_model=Status)
+def update_status(status: Status):
+    memory_db["status"] = status.status
+    return status
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
