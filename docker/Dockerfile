@@ -9,7 +9,7 @@ COPY ./backend/ /backend/
 WORKDIR /backend
 
 # Execute commands (in container)
-RUN pip install ./backend/requirements.txt
+RUN pip install -r requirements.txt
 
 # What to run when running container from image
 CMD ["python", "/app/main.py"]
