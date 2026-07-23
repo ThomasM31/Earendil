@@ -2,3 +2,8 @@
 - Check images with: ```docker images```
 - Run image with: ```docker run -d -p 8000:8000 name-of-image```
 - Check containers with: ```docker ps```
+
+
+### Useful
+- Check for memory usage: ```docker system df```
+- 
