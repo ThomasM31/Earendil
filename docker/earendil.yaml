@@ -1,12 +1,17 @@
 name: Earendil
 services:
 
-  earendil-backend:
+  #database:
+    #image: postgres
+      # etc..
+    #environment:
+
+  backend:
     image: earendil-backend:1.0
     ports: 
       - 8000:8000
     environment:
-
-  #postgres:
-    #image:
-      # etc..
+      #
+    depends_on:
+      - "database"
+    
