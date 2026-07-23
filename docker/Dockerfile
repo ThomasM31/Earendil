@@ -3,7 +3,7 @@
 FROM python:latest
 
 # Copy local files into container
-COPY ./backend/ /backend/
+COPY /backend/ /backend/
 
 # Set working directory (of container)
 WORKDIR /backend
