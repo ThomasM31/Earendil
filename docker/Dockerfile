@@ -1,4 +1,5 @@
 # Definition -> build image -> run container 
+# NOTE: run with docker build -f path/to/Dockerfile -t name-of-image:version
 # Enables commands from: 
 FROM python:latest
 
