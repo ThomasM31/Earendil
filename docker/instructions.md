@@ -1,7 +1,7 @@
 ### Docker pipeline
 1. Create Dockerfile in repo
 2. Dockerfile builds/generates Image, run with (for pathing to work): ```docker build -f path/to/Dockerfile -t name-of-image:version .``` (-f specifies path to file, -t sets name and version)
-3. Run container with: ```docker run -d -p local-port:default-port name-of-image``` (-d runs in detached mode/background, -p sets port)
+3. Run container with: ```docker run -d -p local-port:default-port --name name-to-give-container name-of-image``` (-d runs in detached mode/background, -p sets port)
 
 ### Useful
 - Check for memory usage: ```docker system df```
