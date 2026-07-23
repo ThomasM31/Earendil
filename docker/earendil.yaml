@@ -11,7 +11,7 @@ services:
     ports: 
       - 8000:8000
     environment:
-      #
+      # set variables such as username/passwords
     depends_on:
       - "database"
     
