@@ -1,5 +1,3 @@
-# Definition -> build image -> run container 
-# NOTE: run with docker build -f path/to/Dockerfile -t name-of-image:version
 # Enables commands from: 
 FROM python:latest
 
@@ -12,5 +10,5 @@ WORKDIR /backend
 # Execute commands (in container)
 RUN pip install -r requirements.txt
 
-# What to run when running container from image
-CMD ["python", "/app/main.py"]
+# What to run when running container from image ["program", "file"]
+CMD ["python", "app/main.py"]

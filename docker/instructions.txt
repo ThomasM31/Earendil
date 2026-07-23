@@ -1,0 +1,4 @@
+- Dockerfile builds/generates Image, run with: (for pathing to work): docker build -f path/to/Dockerfile -t name-of-image:version .
+- Check images with: docker images
+- Run image with: docker run -d -p 8000:8000 name-of-image
+- Check containers with: docker ps
