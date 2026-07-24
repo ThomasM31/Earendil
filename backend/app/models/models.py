@@ -16,13 +16,16 @@ class User(Base):
 
 class Article(Base):
     """
-        PDF Article information 
+        PDF Article & related information 
     """
     __tablename__ = "articles"
     doi = sql.Column(sql.String, primary_key=True, index=True)
-    title = sql.Column()
-    author = sql.Column(sql.String)
-    email = sql.Column(sql.String, index=True, unique=True)
+    title = sql.Column(sql.String)
+    journal = sql.Column(sql.String, index=True)
+    volume = sql.Column(sql.Integer)
+    issue = sql.Column(sql.Integer)
     date = sql.Column(sql.DateTime)
-
+    first_author = sql.Column(sql.String, index=True)
+    authors = sql.Column(sql.String, index=True)
+    email = sql.Column(sql.String, index=True, unique=True)
     
