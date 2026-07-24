@@ -1,5 +1,5 @@
 - Integrate FastAPI + PostgreSQL
 - Hur ska databasen se ut? Lagra artiklar som text???
 - Multi-stage build för dockerfile p.g.a. flera images
-- docker compose databas+backend+frontend i .yaml-fil
+- docker compose databas+backend+frontend i .yaml-fil (KLART?)
 - 
