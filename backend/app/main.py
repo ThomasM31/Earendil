@@ -3,6 +3,12 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Annotated
+from models.models import Base
+from db.database import engine, SessionLocal
+from sqlalchemy.orm import Session
+
+app = FastAPI()
+Base.metadata.create_all(bind=engine)
 
 class Status(BaseModel):
     status: str
@@ -13,7 +19,14 @@ class Message(BaseModel):
 class Messages(BaseModel):
     messages: List[Message]
 
-app = FastAPI()
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+db_dependency = Annotated[Session, Depends(get_db)]
 
 origins = [
     "http://localhost:8000"
@@ -33,12 +46,7 @@ memory_db = {
     "messages": [],
             }
 
-# Check available methods
-#for route in app.routes:
-#    print(route.path, route.methods)
-
 # @app: POST, GET, DELETE, PUT
-
 # Define GET-functionality
 @app.get("/greeting", response_model=Message)
 def get_greeting():

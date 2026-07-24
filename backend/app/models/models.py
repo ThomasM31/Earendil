@@ -4,14 +4,14 @@ from db.database import Base
 
 class User(Base):
     """
-        Simple SQL for a contact
+        Simple SQL for a database user
     """
     __tablename__ = "users"
     id = sql.Column(sql.Integer, primary_key=True, index=True)
     first_name = sql.Column(sql.String, index=True)
     last_name = sql.Column(sql.String, index=True)
     email = sql.Column(sql.String, index=True, unique=True)
-    phone_number = sql.Column(sql.String, index=True, unique=True)
+    hashed_password = sql.Column(sql.String)
     date_created = sql.Column(sql.DateTime, default=dt.datetime.now(dt.timezone.utc)) 
 
 class Article(Base):
