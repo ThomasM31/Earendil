@@ -1,18 +1,21 @@
 import datetime as dt
-import sqlalchemy as sql
-from db.database import Base
+#from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 
+class Base(DeclarativeBase):
+    pass
+    
 class User(Base):
     """
-        Simple SQL for a database user
+        structure for a database user
     """
     __tablename__ = "users"
-    id = sql.Column(sql.Integer, primary_key=True, index=True)
-    first_name = sql.Column(sql.String, index=True)
-    last_name = sql.Column(sql.String, index=True)
-    email = sql.Column(sql.String, index=True, unique=True)
-    hashed_password = sql.Column(sql.String)
-    date_created = sql.Column(sql.DateTime, default=dt.datetime.now(dt.timezone.utc)) 
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    email: Mapped[str] = mapped_column(index=True, unique=True)
+    last_name: Mapped[str] = mapped_column(index=True)
+    first_name: Mapped[str]
+    hashed_password: Mapped[str]
+    #date_created: Mapped[] = Column(DateTime, default=dt.datetime.now(dt.timezone.utc)) TODO: How to do this???
 
 """
 class Article(Base):
@@ -20,13 +23,13 @@ class Article(Base):
         #PDF Article & related information 
     
     __tablename__ = "articles"
-    doi = sql.Column(sql.String, primary_key=True, index=True)
-    title = sql.Column(sql.String)
-    journal = sql.Column(sql.String, index=True)
-    volume = sql.Column(sql.Integer)
-    issue = sql.Column(sql.Integer)
-    date = sql.Column(sql.DateTime)
-    first_author = sql.Column(sql.String, index=True)
-    authors = sql.Column(sql.String, index=True)
-    email = sql.Column(sql.String, index=True, unique=True)
+    doi = Column(String, primary_key=True, index=True)
+    title = Column(String)
+    journal = Column(String, index=True)
+    volume = Column(Integer)
+    issue = Column(Integer)
+    date = Column(DateTime)
+    first_author = Column(String, index=True)
+    authors = Column(String, index=True)
+    email = Column(String, index=True, unique=True)
 """
