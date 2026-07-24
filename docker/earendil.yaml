@@ -8,7 +8,7 @@ services:
     volumes:
       - ../backend/app:/app
     environment:
-      DATABASE_URL: postgresql://research_user:research_password@localhost:5432/Earendil
+      DATABASE_URL: postgresql://research_user:research_password@db:5432/Earendil
     depends_on:
       - "db"
   
