@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Annotated
 from models.models import Base
-from db.database import engine, SessionLocal
+from db.database import engine, SessionLocal, get_db
 from sqlalchemy.orm import Session
 
 app = FastAPI()
@@ -18,13 +18,6 @@ class Message(BaseModel):
 
 class Messages(BaseModel):
     messages: List[Message]
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
