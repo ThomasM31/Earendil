@@ -14,10 +14,11 @@ class User(Base):
     hashed_password = sql.Column(sql.String)
     date_created = sql.Column(sql.DateTime, default=dt.datetime.now(dt.timezone.utc)) 
 
+"""
 class Article(Base):
-    """
-        PDF Article & related information 
-    """
+    
+        #PDF Article & related information 
+    
     __tablename__ = "articles"
     doi = sql.Column(sql.String, primary_key=True, index=True)
     title = sql.Column(sql.String)
@@ -28,4 +29,4 @@ class Article(Base):
     first_author = sql.Column(sql.String, index=True)
     authors = sql.Column(sql.String, index=True)
     email = sql.Column(sql.String, index=True, unique=True)
-    
+"""
