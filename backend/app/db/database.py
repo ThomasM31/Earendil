@@ -15,4 +15,4 @@ def get_db():
     finally:
         db.close()
 
-print("DATABASE_URL:", repr(DATABASE_URL))
+#print("DATABASE_URL:", repr(DATABASE_URL))
