@@ -1,17 +1,18 @@
 name: Earendil
 services:
   backend:
-    image: earendil-backend:1.0
+    #image: earendil-backend:1.0
+    build: .
     ports: 
       - 8000:8000
     volumes:
-      - db-data:/etc/data
+      - ../backend/app:/app
     environment:
       DATABASE_URL: postgresql://research_user:research_password@localhost:5432/Earendil
     depends_on:
-      - "database"
+      - "db"
   
-  database:
+  db:
     image: postgres:latest
     environment:
       POSTGRES_USER: research_user
@@ -20,8 +21,8 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - db-data:/var/lib/backup/data
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  db-data:
+  postgres_data:
     
