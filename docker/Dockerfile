@@ -1,3 +1,4 @@
+# ------------------------------------------------------ Backend ------------------------------------------------------
 # Enables commands from
 FROM python:latest
 
@@ -15,3 +16,6 @@ RUN pip install -r requirements.txt
 
 # What to run when running container from image ["program", "file"]
 CMD ["python", "app/main.py"]
+
+# ------------------------------------------------------ Database ------------------------------------------------------
+

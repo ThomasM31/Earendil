@@ -1,0 +1,4 @@
+- FastAPI + PostgreSQL
+- Multi-stage build för dockerfile
+- docker compose databas+backend+frontend
+- 
