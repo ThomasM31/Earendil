@@ -1,10 +1,11 @@
-import sqlalchemy as sql
-import sqlalchemy.ext.declarative as declarative
-import sqlalchemy.orm as orm
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-"""
-DATABASE_URL = "postgresql://myuser:HighBass123!?@localhost/fastapi_database"
-engine = sql.create_engine(DATABASE_URL)
-SessionLocal = orm.sessionmaker(autoflush=False, bind=engine)
-Base = declarative.declarative_base()
-"""
+URL_DATABASE = "postgresql://postgres:HighBass123!?@localhost:5432/Earendil"
+
+engine = create_engine(URL_DATABASE)
+
+SessionLocal = sessionmaker(autoflush=False, bind=engine)
+
+Base = declarative_base()
