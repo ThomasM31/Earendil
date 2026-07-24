@@ -6,10 +6,10 @@ FROM python:latest
 LABEL org.opencontainers.image.authos="thomath@chalmers.se"
 
 # Copy local files into container
-COPY /backend/ /backend/
+COPY backend/ /app/
 
 # Set working directory (of container)
-WORKDIR /backend
+WORKDIR /app
 
 # Execute commands (in container)
 RUN pip install -r requirements.txt

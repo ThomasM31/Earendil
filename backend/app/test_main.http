@@ -1,10 +1,10 @@
 # Greeting test
-GET http://localhost:8000/greeting
+GET http://localhost:8000/
 Accept: application/json
 
 ###
-# Message tests
-GET http://localhost:8000/messages
+# Status tests
+GET http://localhost:8000/status
 Accept: application/json
 
 ###
