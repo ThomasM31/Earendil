@@ -1,11 +1,17 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException, Depends
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Annotated
+
+# FastAPI
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+# Internal
 from models.user import User
-from db.database import engine, Base
+from db.database import engine, Base, get_db
+# SQLAlchemy
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -46,6 +52,19 @@ def get_status():
     return {
         "status": "healthy"
     }
+
+@app.get("/db-test")
+def db_test(db: Session = Depends(get_db)):
+    result = db.execute(text("SELECT 1"))
+    return {
+        "database": result.scalar()
+    }
+"""
+# Supress warning
+@app.get('/favicon.ico', include_in_schema=False)
+async def favicon():
+    return FileResponse("static/favicon.ico")
+"""
 
 """
 # Define POST-functionality
