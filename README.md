@@ -1,6 +1,12 @@
 # Earendil
 An LLM-powered research assistant application. Upload papers and ask questions to recieve cited answers. (NotebookLM/ChatPDF-esque)
 
+[![GitHub repo](https://img.shields.io/badge/github-repo-green)](https://github.com/ThomasM31/Earendil)
+
+<!-- TOADD ex.
+[![Tests](https://github.com/simonw/llm/workflows/Test/badge.svg)](https://github.com/simonw/llm/actions?query=workflow%3ATest)
+-->
+
 ### STACK: 
 - FASTapi REST API
   - PostGreSQL for chats/users
