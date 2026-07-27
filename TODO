@@ -1,4 +1,4 @@
 - Hur ska databasen se ut? Lagra artiklar som text???
 - Multi-stage build för dockerfile p.g.a. flera images?
 - Få in frontend i .yaml
-- Lägg till date_created när user skapas
+- Lägg till date_created när user skapas + skapa password 

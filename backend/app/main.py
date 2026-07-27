@@ -69,11 +69,9 @@ def create_user(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
-    id = str(uuid.uuid4())
-    # Create actual user
+    # Create actual user with essential information
     user = User(email=user_data.email,
-                username=user_data.username,
-                id_internal=id)
+                username=user_data.username)
 
     # Att user to table
     db.add(user)

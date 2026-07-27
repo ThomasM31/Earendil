@@ -2,6 +2,7 @@ import datetime as dt
 #from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 from db.database import Base
+from typing import Optional
     
 class User(Base):
     """
@@ -10,10 +11,8 @@ class User(Base):
     __tablename__ = "users"
     username: Mapped[str] = mapped_column(primary_key=True, index=True)
     email: Mapped[str] = mapped_column(index=True, unique=True)
-    id_internal: Mapped[str] = mapped_column(index=True)
-    last_name: Mapped[str] = mapped_column(index=True)
-    first_name: Mapped[str]
-    hashed_password: Mapped[str]
+    name: Mapped[Optional[str]] 
+    hashed_password: Mapped[Optional[str]]
     #date_created: Mapped[] = Column(DateTime, default=dt.datetime.now(dt.timezone.utc)) TODO: How to do this???
 
 """
