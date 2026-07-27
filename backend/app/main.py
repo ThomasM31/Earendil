@@ -62,7 +62,6 @@ def db_test(db: Session = Depends(get_db)):
         "database": result.scalar()
     }
 
-# TODO: FIX
 @app.get("/users", response_model=list[UserResponse])
 def get_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
@@ -86,8 +85,15 @@ def create_user(
     return user
 
 # Define DELETE-functionality
-#@app.delete("/users")
-#def delete_users():
+@app.delete("/users")
+def delete_all_users(db: Session = Depends(get_db)):
+    users = get_users(db)
+    for user in users:
+        db.delete(user)
+
+    db.commit()
+
+    return "All users deleted"
     
 """
 # Define PUT-functionality

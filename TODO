@@ -3,4 +3,3 @@
 - Bygg frontend
 - Få in frontend i .yaml
 - Lägg till date_created när user skapas + skapa password 
-- Lägg till DELETE_all för users i db
