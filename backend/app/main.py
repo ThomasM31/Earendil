@@ -1,31 +1,28 @@
 import uvicorn
 from pydantic import BaseModel
 from typing import List, Annotated
-
 # FastAPI
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
-from models.user import User
+from models.user import *
 from db.database import engine, Base, get_db
 # SQLAlchemy
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 
+# Setup the database tables & API
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 class Status(BaseModel):
     status: str
 
-class Message(BaseModel):
-    name: str
-
-class Messages(BaseModel):
-    messages: List[Message]
-
-#db_dependency = Annotated[Session, Depends(get_db)]
+# These are set on account creation, id_internal will be generated
+class UserCreate(BaseModel):
+    email: str
+    username: str
 
 origins = [
     "http://localhost:8000"
@@ -66,14 +63,24 @@ async def favicon():
     return FileResponse("static/favicon.ico")
 """
 
-"""
 # Define POST-functionality
-@app.post("/messages", response_model=Message)
-def add_message(message: Message):
-    memory_db["messages"].append(message)
-    return message
+@app.post("/users")
+def create_user(
+    user_data: UserCreate,
+    db: Session = Depends(get_db)
+):
+    # Create actual user
+    user = User(email=user_data.email,
+                username=user_data.username)
 
+    # Att user to table
+    db.add(user)
+    db.commit()
+    db.refresh(user)
 
+    return user
+
+"""
 # Define PUT-functionality
 @app.put("/status", response_model=Status)
 def update_status(status: Status):

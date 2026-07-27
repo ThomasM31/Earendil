@@ -7,11 +7,12 @@ class Base(DeclarativeBase):
     
 class User(Base):
     """
-        structure for a database user
+        SQL structure for a user
     """
     __tablename__ = "users"
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    username: Mapped[str] = mapped_column(primary_key=True, index=True)
     email: Mapped[str] = mapped_column(index=True, unique=True)
+    id_internal: Mapped[int] = mapped_column(index=True)
     last_name: Mapped[str] = mapped_column(index=True)
     first_name: Mapped[str]
     hashed_password: Mapped[str]

@@ -1,11 +1,15 @@
 import os
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
+# Create env. variable from url
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://research_user:research_password@db:5432/Earendil")
+
+# Create engine & session, acts as database representation 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autoflush=False, bind=engine)
+
+# 
 Base = declarative_base()
 
 def get_db():

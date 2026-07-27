@@ -1,3 +1,4 @@
 - Hur ska databasen se ut? Lagra artiklar som text???
 - Multi-stage build för dockerfile p.g.a. flera images?
 - Få in frontend i .yaml
+- Generera id_internal för User när de skapas
