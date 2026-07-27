@@ -24,6 +24,11 @@ class UserCreate(BaseModel):
     email: str
     username: str
 
+class UserResponse(BaseModel):
+    email: str
+    username: str
+    name: str | None
+
 origins = [
     "http://localhost:8000"
 ]
@@ -58,19 +63,10 @@ def db_test(db: Session = Depends(get_db)):
     }
 
 # TODO: FIX
-@app.get("/users")
+@app.get("/users", response_model=list[UserResponse])
 def get_users(db: Session = Depends(get_db)):
-    result = db.execute(text("SELECT * FROM users"))
-    return {
-        "users": result
-    }
-
-"""
-# Supress warning
-@app.get('/favicon.ico', include_in_schema=False)
-async def favicon():
-    return FileResponse("static/favicon.ico")
-"""
+    users = db.query(User).all()
+    return users
 
 # Define POST-functionality
 @app.post("/users")
@@ -89,6 +85,10 @@ def create_user(
 
     return user
 
+# Define DELETE-functionality
+#@app.delete("/users")
+#def delete_users():
+    
 """
 # Define PUT-functionality
 @app.put("/status", response_model=Status)
