@@ -1,9 +1,7 @@
 import datetime as dt
 #from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
-
-class Base(DeclarativeBase):
-    pass
+from sqlalchemy.orm import Mapped, mapped_column
+from db.database import Base
     
 class User(Base):
     """
