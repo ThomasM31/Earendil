@@ -56,6 +56,15 @@ def db_test(db: Session = Depends(get_db)):
     return {
         "database": result.scalar()
     }
+
+# TODO: FIX
+@app.get("/users")
+def get_users(db: Session = Depends(get_db)):
+    result = db.execute(text("SELECT * FROM users"))
+    return {
+        "users": result
+    }
+
 """
 # Supress warning
 @app.get('/favicon.ico', include_in_schema=False)
