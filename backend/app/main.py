@@ -10,7 +10,7 @@ from models.user import *
 from db.database import engine, Base, get_db
 # SQLAlchemy
 from sqlalchemy.orm import Session
-from sqlalchemy import text
+from sqlalchemy import text, update
 
 # Setup the database tables & API
 Base.metadata.create_all(bind=engine)
@@ -79,6 +79,7 @@ def create_user(
 
     # Att user to table
     db.add(user)
+    # Update table with changes
     db.commit()
     db.refresh(user)
 
@@ -95,14 +96,37 @@ def delete_all_users(db: Session = Depends(get_db)):
 
     return "All users deleted"
     
-"""
 # Define PUT-functionality
-@app.put("/status", response_model=Status)
-def update_status(status: Status):
-    memory_db["status"] = status.status
-    return status
-"""
+@app.put("/users")
+def change_user_email(username:str, 
+                      email_to: str, 
+                      db: Session = Depends(get_db)):
+    # Find user in db
+    user = db.get(User, username)
+
+    # Change email
+    user.email = email_to
+
+    # Update table with changes
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+def change_username(email: str, 
+                    username_to: str, 
+                    db: Session = Depends(get_db)):
+    # Find user in db
+    user = db.get(User, email)
+
+    # Change email
+    user.username = username_to
+
+    # Update table with changes
+    db.commit()
+    db.refresh(user)
+
+    return user
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
