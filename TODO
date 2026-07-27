@@ -1,5 +1,13 @@
+Database:
 - Hur ska databasen se ut? Lagra artiklar som text???
+- Database migration (Alembic?)
+
+Backend:
 - Multi-stage build för dockerfile p.g.a. flera images?
-- Bygg frontend
-- Få in frontend i .yaml
 - Lägg till date_created när user skapas + skapa password 
+
+Frontend:
+- Skapa frontend
+- Få in frontend i .yaml
+
+NEXT - Step 5: Create your first database model
