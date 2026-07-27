@@ -1,6 +1,6 @@
 import uvicorn
 from pydantic import BaseModel
-from typing import List, Annotated
+import uuid
 # FastAPI
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.responses import FileResponse
@@ -23,6 +23,7 @@ class Status(BaseModel):
 class UserCreate(BaseModel):
     email: str
     username: str
+    id_internal: str
 
 origins = [
     "http://localhost:8000"
@@ -69,9 +70,11 @@ def create_user(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
+    id = str(uuid.uuid4())
     # Create actual user
     user = User(email=user_data.email,
-                username=user_data.username)
+                username=user_data.username,
+                id_internal=id)
 
     # Att user to table
     db.add(user)
