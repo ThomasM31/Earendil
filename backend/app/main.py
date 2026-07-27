@@ -23,7 +23,6 @@ class Status(BaseModel):
 class UserCreate(BaseModel):
     email: str
     username: str
-    id_internal: str
 
 origins = [
     "http://localhost:8000"
