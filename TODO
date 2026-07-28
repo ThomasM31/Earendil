@@ -4,15 +4,8 @@ Database:
 
 Backend:
 - Multi-stage build för dockerfile p.g.a. flera images?
-- Lägg till date_created när user skapas + skapa password 
+- User Authentication + Authorization (JWT)
 
 Frontend:
-- Skapa frontend
+- Skapa frontend (React)
 - Få in frontend i .yaml
-
-NEXT - Authentication + Authorization
-
-{
-  "email": "user1@mail.com",
-  "username": "user1"
-}
