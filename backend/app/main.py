@@ -78,16 +78,16 @@ def db_test(db: Session = Depends(get_db)):
 
 @app.get("/users", response_model=list[UserResponse])
 def get_users(db: Session = Depends(get_db)):
-    print("Getting users...")
+    #print("Getting users...")
     users = db.query(User).all()
 
     #TEST
-    print(f"USERS: {users[0].__dict__}")
+    #print(f"USERS: {users[0].__dict__}")
 
     return users
     
 # Define POST-functionality
-@app.post("/users")
+@app.post("/users/register")
 def create_user(
     user_data: UserCreate,
     db: Session = Depends(get_db)
@@ -102,8 +102,9 @@ def create_user(
     db.commit()
     db.refresh(user)
 
-    print("posted!")
     return user
+
+#@app.post("auth/login")
 
 # Define DELETE-functionality
 @app.delete("/users", response_model=str)
@@ -133,7 +134,7 @@ def change_user_email(username:str,
 
     return user
 
-#@app.put("/users")
+@app.put("/users")
 def change_username(email: str, 
                     username_to: str, 
                     db: Session = Depends(get_db)):
