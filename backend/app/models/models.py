@@ -1,5 +1,4 @@
 import datetime as dt
-#from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 from app.db.database import Base
 from typing import Optional
@@ -12,7 +11,7 @@ class User(Base):
     username: Mapped[str] = mapped_column(primary_key=True, index=True)
     email: Mapped[str] = mapped_column(index=True, unique=True)
     name: Mapped[Optional[str]]
-    hashed_password: Mapped[Optional[str]]
+    hashed_password: Mapped[str]
     date_created: Mapped[dt.datetime] = mapped_column(index=True, default=str(dt.datetime.now(dt.timezone.utc)))
 
 """

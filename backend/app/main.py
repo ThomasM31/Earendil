@@ -1,16 +1,13 @@
 #raise RuntimeError("THIS IS THE FILE I AM EDITING")
 import uvicorn
-from pydantic import BaseModel
-import uuid
-import datetime as dt
-from typing import Optional
 # FastAPI
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
-from app.models.user import *
+from app.models.models import *
 from app.db.database import engine, Base, get_db
+from app.models.schemas import UserCreate, UserResponse, Status
 # SQLAlchemy
 from sqlalchemy.orm import Session
 from sqlalchemy import text, update
@@ -18,30 +15,6 @@ from sqlalchemy import text, update
 # Setup the database tables & API
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
-
-class Status(BaseModel):
-    status: str
-
-# These are set on account creation, date_created will be generated
-class UserCreate(BaseModel):
-    """
-        Information needed for account creation
-    """
-    email: str
-    username: str
-    # TODO: add password
-
-class UserResponse(BaseModel):
-    """
-        Class for returning info from users
-    """
-    username: str
-    email: str
-    name: Optional[str] = None
-    hashed_password: Optional[str] = None
-    date_created: dt.datetime
-
-    model_config = {"from_attributes":True}
 
 origins = [
     "http://localhost:8000"
