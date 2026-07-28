@@ -104,7 +104,8 @@ def create_user(
 
     return user
 
-#@app.post("auth/login")
+@app.post("auth/login")
+#def 
 
 # Define DELETE-functionality
 @app.delete("/users", response_model=str)
