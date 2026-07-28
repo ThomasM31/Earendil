@@ -10,7 +10,7 @@ Frontend:
 - Skapa frontend
 - Få in frontend i .yaml
 
-NEXT - Step 5: Create your first database model
+NEXT - Authentication + Authorization
 
 {
   "email": "user1@mail.com",
