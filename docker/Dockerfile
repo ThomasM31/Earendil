@@ -4,11 +4,11 @@ FROM python:latest
 # Add author info
 LABEL org.opencontainers.image.authos="thomath@chalmers.se"
 
-# Copy local files into container
-COPY backend/ /backend/
-
 # Set working directory (of container)
 WORKDIR /backend
+
+# Copy local files into container
+COPY backend/ /backend/
 
 # Create venv. in container
 RUN python -m venv /env
@@ -21,5 +21,5 @@ ENV PATH=/env/bin:$PATH
 ADD ../backend/requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
 
-# What to run when running container from image ["program", "file"]
-CMD ["python", "app/main.py"]
+# What to run when running container from image ["program", "file"] (Path in WORKDIR)
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -1,3 +1,4 @@
+#raise RuntimeError("THIS IS THE FILE I AM EDITING")
 import uvicorn
 from pydantic import BaseModel
 import uuid
@@ -8,8 +9,8 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
-from models.user import *
-from db.database import engine, Base, get_db
+from app.models.user import *
+from app.db.database import engine, Base, get_db
 # SQLAlchemy
 from sqlalchemy.orm import Session
 from sqlalchemy import text, update
@@ -75,17 +76,16 @@ def db_test(db: Session = Depends(get_db)):
         "database": result.scalar()
     }
 
-@app.get("/users") #response_model=list[UserResponse])
+@app.get("/users", response_model=list[UserResponse])
 def get_users(db: Session = Depends(get_db)):
-    #print("Getting users...")
-    #users = db.query(User).all()
+    print("Getting users...")
+    users = db.query(User).all()
 
     #TEST
-    #print(f"USERS: {users[0].__dict__}")
+    print(f"USERS: {users[0].__dict__}")
 
-    #return users
-    return {"message": "THIS IS THE NEW CODE"}
-
+    return users
+    
 # Define POST-functionality
 @app.post("/users")
 def create_user(
