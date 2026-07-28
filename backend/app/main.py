@@ -1,6 +1,8 @@
 import uvicorn
 from pydantic import BaseModel
 import uuid
+import datetime as dt
+from typing import Optional
 # FastAPI
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.responses import FileResponse
@@ -19,15 +21,26 @@ app = FastAPI()
 class Status(BaseModel):
     status: str
 
-# These are set on account creation, id_internal will be generated
+# These are set on account creation, date_created will be generated
 class UserCreate(BaseModel):
+    """
+        Information needed for account creation
+    """
     email: str
     username: str
+    # TODO: add password
 
 class UserResponse(BaseModel):
-    email: str
+    """
+        Class for returning info from users
+    """
     username: str
-    name: str | None
+    email: str
+    name: Optional[str] = None
+    hashed_password: Optional[str] = None
+    date_created: dt.datetime
+
+    model_config = {"from_attributes":True}
 
 origins = [
     "http://localhost:8000"
@@ -62,10 +75,16 @@ def db_test(db: Session = Depends(get_db)):
         "database": result.scalar()
     }
 
-@app.get("/users", response_model=list[UserResponse])
+@app.get("/users") #response_model=list[UserResponse])
 def get_users(db: Session = Depends(get_db)):
-    users = db.query(User).all()
-    return users
+    #print("Getting users...")
+    #users = db.query(User).all()
+
+    #TEST
+    #print(f"USERS: {users[0].__dict__}")
+
+    #return users
+    return {"message": "THIS IS THE NEW CODE"}
 
 # Define POST-functionality
 @app.post("/users")
@@ -83,10 +102,11 @@ def create_user(
     db.commit()
     db.refresh(user)
 
+    print("posted!")
     return user
 
 # Define DELETE-functionality
-@app.delete("/users")
+@app.delete("/users", response_model=str)
 def delete_all_users(db: Session = Depends(get_db)):
     users = get_users(db)
     for user in users:
@@ -113,6 +133,7 @@ def change_user_email(username:str,
 
     return user
 
+#@app.put("/users")
 def change_username(email: str, 
                     username_to: str, 
                     db: Session = Depends(get_db)):

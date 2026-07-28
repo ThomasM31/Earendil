@@ -11,3 +11,8 @@ Frontend:
 - Få in frontend i .yaml
 
 NEXT - Step 5: Create your first database model
+
+{
+  "email": "user1@mail.com",
+  "username": "user1"
+}

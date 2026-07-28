@@ -11,9 +11,9 @@ class User(Base):
     __tablename__ = "users"
     username: Mapped[str] = mapped_column(primary_key=True, index=True)
     email: Mapped[str] = mapped_column(index=True, unique=True)
-    name: Mapped[Optional[str]] = mapped_column()
-    hashed_password: Mapped[Optional[str]] = mapped_column()
-    #date_created: Mapped[] = Column(DateTime, default=dt.datetime.now(dt.timezone.utc)) TODO: How to do this???
+    name: Mapped[Optional[str]]
+    hashed_password: Mapped[Optional[str]]
+    date_created: Mapped[dt.datetime] = mapped_column(index=True, default=str(dt.datetime.now(dt.timezone.utc)))
 
 """
 class Article(Base):
