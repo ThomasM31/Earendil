@@ -4,7 +4,7 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
-from app.models.models import User
+from backend.app.models.user import User
 from app.db.database import engine, Base, get_db
 from app.schemas.user import UserCreate, UserResponse
 from app.auth.security import hash_password
