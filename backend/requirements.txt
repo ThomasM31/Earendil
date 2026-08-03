@@ -3,6 +3,11 @@ uvicorn
 pydantic
 SQLAlchemy
 psycopg2-binary
-pwdlib[argon2]
-pyjwt
-pydantic-settings
+
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+
+#pwdlib[argon2]
+#pyjwt
+#pydantic-settings
