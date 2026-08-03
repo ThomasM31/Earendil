@@ -10,7 +10,7 @@ class User(Base):
     __tablename__ = "users"
     username: Mapped[str] = mapped_column(primary_key=True, index=True)
     email: Mapped[str] = mapped_column(index=True, unique=True)
-    name: Mapped[Optional[str]]
+    name: Mapped[str]
     hashed_password: Mapped[str]
     date_created: Mapped[dt.datetime] = mapped_column(index=True, default=str(dt.datetime.now(dt.timezone.utc)))
 

@@ -4,9 +4,10 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
-from app.models.models import *
+from app.models.models import User
 from app.db.database import engine, Base, get_db
-from app.models.schemas import UserCreate, UserResponse, Status
+from app.schemas.user import UserCreate, UserResponse
+from app.auth.security import hash_password
 # SQLAlchemy
 from sqlalchemy.orm import Session
 from sqlalchemy import text, update
@@ -64,9 +65,11 @@ def create_user(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
-    # Create actual user with essential information
+    # Create actual user with essential information, hash password
     user = User(email=user_data.email,
-                username=user_data.username)
+                username=user_data.username,
+                name=user_data.name, 
+                hashed_password=hash_password(user_data.password))
 
     # Att user to table
     db.add(user)
