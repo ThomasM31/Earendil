@@ -18,17 +18,11 @@ def login(user_data: UserCreate, db: Session = Depends(get_db)):
 
     # User does not exist in database
     if not user:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid credentials"
-        )
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
     # Incorrect passowrd for user
     if not verify_password(user_data.password, user.hashed_password):
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid credentials"
-        )
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_access_token({"sub": str(user.username)})
 
