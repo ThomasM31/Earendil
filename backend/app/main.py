@@ -1,13 +1,11 @@
 #raise RuntimeError("THIS IS THE FILE I AM EDITING")
 import uvicorn
 # FastAPI
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
-from backend.app.models.user import User
 from app.db.database import engine, Base, get_db
-from app.schemas.user import UserCreate, UserResponse
-from app.auth.security import hash_password
+from routers import user
 # SQLAlchemy
 from sqlalchemy.orm import Session
 from sqlalchemy import text, update
@@ -28,8 +26,9 @@ app.add_middleware(
     allow_headers=["*"],
                    )
 
-# @app: POST, GET, DELETE, PUT
-# Define GET-functionality
+# Add routers here
+app.include_router(user.router)
+
 @app.get("/")
 def root():
     return {
@@ -49,84 +48,6 @@ def db_test(db: Session = Depends(get_db)):
         "database": result.scalar()
     }
 
-@app.get("/users", response_model=list[UserResponse])
-def get_users(db: Session = Depends(get_db)):
-    users = db.query(User).all()
-    return users
-
-@app.get("/users", response_model=UserResponse)
-def get_user(username:str, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username == username).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
-    
-# Define POST-functionality
-@app.post("/users/register")
-def create_user(
-    user_data: UserCreate,
-    db: Session = Depends(get_db)
-):
-    # Create actual user with essential information, hash password
-    user = User(email=user_data.email,
-                username=user_data.username,
-                name=user_data.name, 
-                hashed_password=hash_password(user_data.password))
-
-    # Att user to table
-    db.add(user)
-    # Update table with changes
-    db.commit()
-    db.refresh(user)
-
-    return user
-
-@app.post("auth/login")
-#def 
-
-# Define DELETE-functionality
-@app.delete("/users", response_model=str)
-def delete_all_users(db: Session = Depends(get_db)):
-    users = get_users(db)
-    for user in users:
-        db.delete(user)
-
-    db.commit()
-
-    return "All users deleted"
-    
-# Define PUT-functionality
-@app.put("/users")
-def change_user_email(username:str, 
-                      email_to: str, 
-                      db: Session = Depends(get_db)):
-    # Find user in db
-    user = db.get(User, username)
-
-    # Change email
-    user.email = email_to
-
-    # Update table with changes
-    db.commit()
-    db.refresh(user)
-
-    return user
-
-@app.put("/users")
-def change_username(email: str, 
-                    username_to: str, 
-                    db: Session = Depends(get_db)):
-    # Find user in db
-    user = db.get(User, email)
-
-    # Change email
-    user.username = username_to
-
-    # Update table with changes
-    db.commit()
-    db.refresh(user)
-
-    return user
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
