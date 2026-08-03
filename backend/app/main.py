@@ -51,13 +51,15 @@ def db_test(db: Session = Depends(get_db)):
 
 @app.get("/users", response_model=list[UserResponse])
 def get_users(db: Session = Depends(get_db)):
-    #print("Getting users...")
     users = db.query(User).all()
-
-    #TEST
-    #print(f"USERS: {users[0].__dict__}")
-
     return users
+
+@app.get("/users", response_model=UserResponse)
+def get_user(username:str, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == username).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
     
 # Define POST-functionality
 @app.post("/users/register")
