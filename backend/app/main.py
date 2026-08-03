@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
 from app.db.database import engine, Base, get_db
-from routers import user
+from routers import user, auth
 # SQLAlchemy
 from sqlalchemy.orm import Session
 from sqlalchemy import text, update
@@ -28,6 +28,7 @@ app.add_middleware(
 
 # Add routers here
 app.include_router(user.router)
+app.include_router(auth.router)
 
 @app.get("/")
 def root():

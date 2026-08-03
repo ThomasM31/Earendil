@@ -1,6 +1,8 @@
+# FastAPI
 from fastapi import APIRouter, Depends, HTTPException
+# SQLAlchemy
 from sqlalchemy.orm import Session
-
+# Internal
 from app.db.database import get_db
 from app.models.user import User
 from app.schemas.user import UserCreate, Token

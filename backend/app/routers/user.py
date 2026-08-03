@@ -8,7 +8,7 @@ from app.db.database import get_db
 from app.schemas.user import UserCreate, UserResponse
 from app.auth.security import hash_password
 
-router = APIRouter()
+router = APIRouter(prefix="/users", tags=["Users", "User"])
 
 # Define GET-functionality
 @router.get("/users", response_model=list[UserResponse])
