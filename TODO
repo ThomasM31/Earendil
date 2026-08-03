@@ -4,8 +4,10 @@ Database:
 
 Backend:
 - Multi-stage build för dockerfile p.g.a. flera images?
-- User Authentication + Authorization (JWT)
+- 
 
 Frontend:
 - Skapa frontend (React)
 - Få in frontend i .yaml
+
+CURRENT: User Authentication + Authorization (JWT)
