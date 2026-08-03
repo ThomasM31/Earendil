@@ -52,7 +52,17 @@ def delete_all_users(db: Session = Depends(get_db)):
 
     db.commit()
 
-    return "All users deleted"
+    return "All users deleted!!!"
+
+@router.delete("/users/{username}", response_model=str)
+def delete_user(username:str, db:Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == username).first()
+
+    if user:
+        db.delete(user)
+        db.commit()
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
     
 # Define PUT-functionality
 @router.put("/users/{username}")

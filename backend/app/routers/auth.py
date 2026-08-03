@@ -30,6 +30,6 @@ def login(user_data: UserCreate, db: Session = Depends(get_db)):
             detail="Invalid credentials"
         )
 
-    token = create_access_token({"sub": str(user.id)})
+    token = create_access_token({"sub": str(user.username)})
 
     return {"access_token": token, "token_type": "bearer"}
