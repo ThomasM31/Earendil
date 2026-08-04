@@ -1,11 +1,11 @@
 # FastAPI
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 # SQLAlchemy
 from sqlalchemy.orm import Session
 # Internal
 from app.db.database import get_db
 from app.models.user import User
-from app.schemas.user import UserCreate, Token, UserLogin
+from app.schemas.user import Token, UserLogin
 from app.auth.security import verify_password
 from app.auth.jwt import create_access_token
 
@@ -19,11 +19,11 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
 
     # User does not exist in database
     if not user:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
     # Incorrect passowrd for user
     if not verify_password(user_data.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
     token = create_access_token({"sub": str(user.username)})
 

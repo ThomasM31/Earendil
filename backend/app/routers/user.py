@@ -20,7 +20,7 @@ router = APIRouter(prefix="/users",
 def get_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
     if not users:
-        raise HTTPException(status_code=404, detail="No users found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No users found")
     
     return users
 
