@@ -18,6 +18,9 @@ router = APIRouter(prefix="/users",
 # Define GET-functionality
 @router.get("/", response_model=list[UserPrivate])
 def get_users(db: Session = Depends(get_db)):
+    """
+        Fetch all users from database
+    """
     users = db.query(User).all()
     if not users:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No users found")
@@ -114,6 +117,9 @@ def delete_user(username: str, db:Session = Depends(get_db)):
 def update_user(username: str, 
                 user_update: UserUpdate,
                 db: Session = Depends(get_db)):
+    """
+        Update either email or password for user
+    """
 
     # Find user in db
     user = db.query(User).filter(func.lower(User.username) == username.lower()).first()
