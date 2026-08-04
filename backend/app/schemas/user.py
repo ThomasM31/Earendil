@@ -24,7 +24,6 @@ class UserResponse(BaseModel):
     username: str
     email: str
     name: Optional[str] = None
-    password: Optional[str] = None
     date_created: dt.datetime
 
     model_config = {"from_attributes":True}
