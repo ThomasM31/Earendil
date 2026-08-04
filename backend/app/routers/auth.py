@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 # Internal
 from app.db.database import get_db
 from app.models.user import User
-from app.schemas.user import UserCreate, Token
+from app.schemas.user import UserCreate, Token, UserLogin
 from app.auth.security import verify_password
 from app.auth.jwt import create_access_token
 
@@ -13,9 +13,9 @@ router = APIRouter(prefix="/auth",
                    tags=["Authentication"])
 
 @router.post("/login", response_model=Token)
-def login(user_data: UserCreate, db: Session = Depends(get_db)):
+def login(user_data: UserLogin, db: Session = Depends(get_db)):
 
-    user = db.query(User).filter(User.email == user_data.email).first()
+    user = db.query(User).filter(User.username == user_data.username).first()
 
     # User does not exist in database
     if not user:

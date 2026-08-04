@@ -20,6 +20,19 @@ class UserCreate(BaseModel):
         }
     )
 
+class UserLogin(BaseModel):
+    username: str = Field(min_length=1, max_length=50)
+    password: str = Field(min_length=8)
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "username": "MyUserName1",
+                "password": "SecurePassword123" 
+            }
+        }
+    )
+
 class UserResponse(BaseModel):
     username: str
     email: str
