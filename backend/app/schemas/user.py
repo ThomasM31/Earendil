@@ -41,12 +41,12 @@ class UserPublic(BaseModel):
     id: int
     username: str
     name: Optional[str] = None
-    date_created: dt.datetime
 
     model_config = {"from_attributes":True}
 
 class UserPrivate(UserPublic):
     email: str
+    date_created: dt.datetime
 
 class Token(BaseModel):
     access_token: str
