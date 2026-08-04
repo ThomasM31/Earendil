@@ -15,6 +15,9 @@ router = APIRouter(prefix="/users",
 @router.get("/", response_model=list[UserResponse])
 def get_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
+    if not users:
+        raise HTTPException(status_code=404, detail="No users found")
+    
     return users
 
 @router.get("/{username}", response_model=UserResponse)

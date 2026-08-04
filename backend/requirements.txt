@@ -4,10 +4,9 @@ pydantic
 SQLAlchemy
 psycopg2-binary
 
-passlib[bcrypt]
 python-jose[cryptography]
 python-multipart
+pwdlib[argon2]
 
-#pwdlib[argon2]
 #pyjwt
 #pydantic-settings

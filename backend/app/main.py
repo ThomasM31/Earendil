@@ -32,7 +32,7 @@ app.include_router(auth.router)
 
 # Default HTTP
 @app.get("/")
-def root():
+async def root():
     return {
         "message": "Research Assistant API"
     }

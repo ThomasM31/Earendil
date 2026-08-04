@@ -4,6 +4,7 @@ Database:
 
 Backend:
 - Multi-stage build för dockerfile p.g.a. flera images?
+- async??
 - 
 
 Frontend:
