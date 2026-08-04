@@ -12,11 +12,3 @@ Frontend:
 - Få in frontend i .yaml
 
 CURRENT: User Authentication + Authorization (JWT)
-
-
-{
-  "email": "mail1@mail.com",
-  "name": "name1",
-  "username": "uname1",
-  "password": "passw111"
-}

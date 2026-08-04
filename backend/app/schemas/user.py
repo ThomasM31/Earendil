@@ -13,6 +13,7 @@ class UserCreate(BaseModel):
         json_schema_extra={
             "example": {
                 "username": "MyUserName1",
+                "name": "FirstName LastName",
                 "email": "UserEmail@example.com",
                 "password": "SecurePassword123"
             }
