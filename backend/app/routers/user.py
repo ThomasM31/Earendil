@@ -37,27 +37,28 @@ def create_user(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
-    existing_user = db.query(User).filter(User.username == user_data.username)
+    # Check for existing user, not case sensitive
+    existing_user = db.query(User).filter(func.lower(User.username) == user_data.username.lower())
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists")
 
-    existing_email = db.query(User).filter(User.email == user_data.email)
+    existing_email = db.query(User).filter(func.lower(User.email) == user_data.email.lower())
     if existing_email:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists")
         
     # Create actual user with essential information, hash password
-    user = User(email=user_data.email,
+    new_user = User(email=user_data.email.lower(),
                 username=user_data.username,
                 name=user_data.name, 
                 hashed_password=hash_password(user_data.password))
 
     # Att user to table
-    db.add(user)
+    db.add(new_user)
     # Update table with changes
     db.commit()
-    db.refresh(user)
+    db.refresh(new_user)
 
-    return user
+    return new_user
 
 # Define DELETE-functionality
 @router.delete("/", response_model=str)
