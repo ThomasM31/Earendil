@@ -1,7 +1,7 @@
 #raise RuntimeError("THIS IS THE FILE I AM EDITING")
 import uvicorn
 # FastAPI
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
 from app.db.database import engine, Base, get_db
@@ -36,7 +36,6 @@ async def root():
     return {
         "message": "Research Assistant API"
     }
-
 
 
 @app.get("/status")
