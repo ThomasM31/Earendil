@@ -9,7 +9,8 @@ from app.schemas.user import UserCreate, Token
 from app.auth.security import verify_password
 from app.auth.jwt import create_access_token
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(prefix="/auth", 
+                   tags=["Authentication"])
 
 @router.post("/login", response_model=Token)
 def login(user_data: UserCreate, db: Session = Depends(get_db)):

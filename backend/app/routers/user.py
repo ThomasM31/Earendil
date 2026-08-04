@@ -8,23 +8,24 @@ from app.db.database import get_db
 from app.schemas.user import UserCreate, UserResponse
 from app.auth.security import hash_password
 
-router = APIRouter(prefix="/users", tags=["Users", "User"])
+router = APIRouter(prefix="/users", 
+                   tags=["Users"])
 
 # Define GET-functionality
-@router.get("/users", response_model=list[UserResponse])
+@router.get("/", response_model=list[UserResponse])
 def get_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
     return users
 
-@router.get("/users/{username}", response_model=UserResponse)
-def get_user(username:str, db: Session = Depends(get_db)):
+@router.get("/{username}", response_model=UserResponse)
+def get_user(username: str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == username).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
     
 # Define POST-functionality
-@router.post("/users/register", status_code=status.HTTP_201_CREATED)
+@router.post("/register", status_code=status.HTTP_201_CREATED)
 def create_user(
     user_data: UserCreate,
     db: Session = Depends(get_db)
@@ -44,7 +45,7 @@ def create_user(
     return user
 
 # Define DELETE-functionality
-@router.delete("/users", response_model=str)
+@router.delete("/", response_model=str)
 def delete_all_users(db: Session = Depends(get_db)):
     users = get_users(db)
     for user in users:
@@ -54,8 +55,8 @@ def delete_all_users(db: Session = Depends(get_db)):
 
     return "All users deleted!!!"
 
-@router.delete("/users/{username}", response_model=str)
-def delete_user(username:str, db:Session = Depends(get_db)):
+@router.delete("/{username}", response_model=str)
+def delete_user(username: str, db:Session = Depends(get_db)):
     user = db.query(User).filter(User.username == username).first()
 
     if user:
@@ -65,8 +66,8 @@ def delete_user(username:str, db:Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     
 # Define PUT-functionality
-@router.put("/users/{username}")
-def change_user_email(username:str, 
+@router.put("/{username}")
+def change_user_email(username: str, 
                       email_to: str, 
                       db: Session = Depends(get_db)):
     # Find user in db
@@ -81,7 +82,7 @@ def change_user_email(username:str,
 
     return user
 
-@router.put("/users/{username}")
+@router.put("/{username}")
 def change_username(email: str, 
                     username_to: str, 
                     db: Session = Depends(get_db)):
