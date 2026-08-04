@@ -48,7 +48,6 @@ class UserPublic(BaseModel):
 class UserPrivate(UserPublic):
     email: str
 
-
 class Token(BaseModel):
     access_token: str
     token_type: str
