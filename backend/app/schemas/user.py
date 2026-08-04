@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 import datetime as dt
 from typing import Optional
 
@@ -8,6 +8,16 @@ class UserCreate(BaseModel):
     name: str = Field(max_length=120)
     username: str = Field(min_length=1, max_length=50)
     password: str = Field(min_length=8)
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "username": "MyUserName1",
+                "email": "UserEmail@example.com",
+                "password": "SecurePassword123"
+            }
+        }
+    )
 
 class UserResponse(BaseModel):
     username: str
