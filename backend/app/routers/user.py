@@ -1,18 +1,22 @@
 # FastAPI
 from fastapi import HTTPException, Depends, status, APIRouter
+from fastapi.security import OAuth2PasswordRequestForm
 # SQLAlchemy
 from sqlalchemy.orm import Session
+from sqlalchemy import func, select
 # Internal
 from app.models.user import User
 from app.db.database import get_db
-from app.schemas.user import UserCreate, UserResponse
-from app.auth.security import hash_password
+from app.schemas.user import UserCreate, UserPublic, UserPrivate
+from app.auth.security import hash_password, verify_password
+from app.auth.jwt import create_access_token, verify_access_token
+from datetime import timedelta
 
 router = APIRouter(prefix="/users", 
                    tags=["Users"])
 
 # Define GET-functionality
-@router.get("/", response_model=list[UserResponse])
+@router.get("/", response_model=list[UserPrivate])
 def get_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
     if not users:
@@ -20,7 +24,7 @@ def get_users(db: Session = Depends(get_db)):
     
     return users
 
-@router.get("/{username}", response_model=UserResponse)
+@router.get("/{username}", response_model=UserPublic)
 def get_user(username: str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == username).first()
     if not user:
@@ -28,11 +32,19 @@ def get_user(username: str, db: Session = Depends(get_db)):
     return user
     
 # Define POST-functionality
-@router.post("/register", status_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=UserPrivate, status_code=status.HTTP_201_CREATED)
 def create_user(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
+    existing_user = db.query(User).filter(User.username == user_data.username)
+    if existing_user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists")
+
+    existing_email = db.query(User).filter(User.email == user_data.email)
+    if existing_email:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists")
+        
     # Create actual user with essential information, hash password
     user = User(email=user_data.email,
                 username=user_data.username,

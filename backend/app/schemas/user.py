@@ -33,13 +33,16 @@ class UserLogin(BaseModel):
         }
     )
 
-class UserResponse(BaseModel):
+class UserPublic(BaseModel):
     username: str
-    email: str
     name: Optional[str] = None
     date_created: dt.datetime
 
     model_config = {"from_attributes":True}
+
+class UserPrivate(UserPublic):
+    email: str
+
 
 class Token(BaseModel):
     access_token: str

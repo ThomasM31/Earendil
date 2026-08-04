@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, UTC
-#from jose import jwt
 import jwt
 import os
 from dotenv import load_dotenv
@@ -11,7 +10,9 @@ algorithm = os.getenv("ALGORITHM")
 access_token_expire_minutes = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 def create_access_token(data: dict, time_to_expire_minutes: int | None = None):
-
+    """
+        Create access token from username
+    """
     to_encode = data.copy()
 
     if time_to_expire_minutes:
