@@ -5,7 +5,6 @@ Database:
 Backend:
 - Multi-stage build för dockerfile p.g.a. flera images?
 - async??
-- password i get_users() är null trots att lösenord finns?
 
 Frontend:
 - Skapa frontend (React)
