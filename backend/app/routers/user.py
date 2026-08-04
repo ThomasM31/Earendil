@@ -38,7 +38,7 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                             detail="Invalid or expired token")
 
-    user = db.query(User).filter(User.username == user_id)
+    user = db.query(User).filter(User.id == user_id)
 
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
