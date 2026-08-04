@@ -23,3 +23,13 @@ def create_access_token(data: dict, time_to_expire_minutes: int | None = None):
     )
 
     return encoded_jwt
+
+#def verify_access_token(token: str) -> str | None:
+    """
+        Verify a JWT access token and return subject (username) if valid
+    """
+    #try:
+    #    payload = jwt.decode(
+    #        token,
+    #        settings
+    #    )

@@ -1,14 +1,14 @@
 #raise RuntimeError("THIS IS THE FILE I AM EDITING")
 import uvicorn
 # FastAPI
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
 from app.db.database import engine, Base, get_db
 from app.routers import user, auth
 # SQLAlchemy
 from sqlalchemy.orm import Session
-from sqlalchemy import text, update
+from sqlalchemy import text
 
 # Setup the database tables & API
 Base.metadata.create_all(bind=engine)
@@ -36,6 +36,8 @@ async def root():
     return {
         "message": "Research Assistant API"
     }
+
+
 
 @app.get("/status")
 def get_status():
