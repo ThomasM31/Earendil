@@ -5,7 +5,7 @@ SECRET_KEY = "change-this-later"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-def create_access_token(data: dict, time_to_expire_minutes: int | None):
+def create_access_token(data: dict, time_to_expire_minutes: int | None = None):
 
     to_encode = data.copy()
 
