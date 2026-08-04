@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, UTC
-from jose import jwt
+#from jose import jwt
+import jwt
 import os
 from dotenv import load_dotenv
 
@@ -21,8 +22,8 @@ def create_access_token(data: dict, time_to_expire_minutes: int | None = None):
     to_encode.update({"exp": expire})
 
     encoded_jwt = jwt.encode(
-        to_encode,
-        secret_key,
+        payload=to_encode,
+        key=secret_key,
         algorithm=algorithm
     )
 
@@ -39,5 +40,7 @@ def verify_access_token(token: str) -> str | None:
             algorithms=[algorithm],
             options={"require": ["exp", "sub"]}
         )
-    except:
-        pass
+    except jwt.InvalidTokenError:
+        return None
+    else:
+        return payload.get("sub")

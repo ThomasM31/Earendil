@@ -4,9 +4,9 @@ pydantic
 SQLAlchemy
 psycopg2-binary
 dotenv
-python-jose[cryptography]
+#python-jose[cryptography]
 python-multipart
 pwdlib[argon2]
 
-#pyjwt
+pyjwt
 #pydantic-settings
