@@ -3,7 +3,9 @@
 <div align="center">
 
 [![GitHub repo](https://img.shields.io/badge/github-repo-green)](https://github.com/ThomasM31/Earendil)
+<!--- 
 [![Tests](https://github.com/ThomasM31/Earendil/workflows/Test/badge.svg)](https://github.com/ThomasM31/Earendil/actions?query=workflow%3ATest)
+--->
 <a href="https://github.com/ThomasM31/Earendil"><img src="https://img.shields.io/github/stars/ThomasM31/Earendil" alt="Stars Badge"/></a>
 <a href="https://github.com/ThomasM31/Earendil/graphs/contributors?from=10%2F19%2F2024"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/ThomasM31/Earendil?color=2b9348"></a>
 
