@@ -58,30 +58,31 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
     return user
     
 # Define POST-functionality
-@router.post("/register", response_model=UserPrivate, status_code=status.HTTP_201_CREATED)
+@router.post("/register", status_code=status.HTTP_201_CREATED)
 def create_user(
-    user_data: UserCreate,
+    user: UserCreate,
     db: Session = Depends(get_db)
 ):
     """
         Create a new user and add to database
     """
     # Check for existing user, not case sensitive
-    existing_user = db.query(User).filter(func.lower(User.username) == user_data.username.lower())
+    existing_user = db.query(User).filter(func.lower(User.username) == user.username.lower()).first()
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
                             detail="Username already exists")
 
-    existing_email = db.query(User).filter(func.lower(User.email) == user_data.email.lower())
+    # Same for email
+    existing_email = db.query(User).filter(func.lower(User.email) == user.email.lower()).first()
     if existing_email:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
                             detail="Email already exists")
         
     # Create actual user with essential information, hash password
-    new_user = User(email=user_data.email.lower(),
-                username=user_data.username,
-                name=user_data.name, 
-                hashed_password=hash_password(user_data.password))
+    new_user = User(email=user.email.lower(),
+                username=user.username,
+                name=user.name, 
+                hashed_password=hash_password(user.password))
 
     # Att user to table
     db.add(new_user)
@@ -89,7 +90,6 @@ def create_user(
     db.commit()
     db.refresh(new_user)
 
-    user_return = UserPrivate()
     return new_user
 
 # Define DELETE-functionality
