@@ -7,7 +7,7 @@ from sqlalchemy import func, select
 # Internal
 from app.models.user import User
 from app.db.database import get_db
-from app.schemas.user import UserCreate, UserPublic, UserPrivate
+from app.schemas.user import UserCreate, UserPublic, UserPrivate, UserUpdate
 from app.auth.security import hash_password, verify_password
 from app.auth.jwt import create_access_token, verify_access_token
 from datetime import timedelta
@@ -110,31 +110,35 @@ def delete_user(username: str, db:Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     
 # Define PUT-functionality
-@router.put("/{username}")
-def change_user_email(username: str, 
-                      email_to: str, 
-                      db: Session = Depends(get_db)):
+@router.patch("/{username}")
+def update_user(username: str, 
+                user_update: UserUpdate,
+                db: Session = Depends(get_db)):
+
     # Find user in db
-    user = db.get(User, username)
+    user = db.query(User).filter(func.lower(User.username) == username.lower()).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    # Change email
-    user.email = email_to
+    # If user wants to swith username & it is not the same as already in place
+    if user_update.username is not None and user_update.username.lower() != user.username.lower():
+        existing_username = db.query(User).filter(func.lower(User.username) == user_update.username.lower()).first()
+        # Check if new username is already in use
+        if existing_username:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists")
 
-    # Update table with changes
-    db.commit()
-    db.refresh(user)
-
-    return user
-
-@router.put("/{username}")
-def change_username(email: str, 
-                    username_to: str, 
-                    db: Session = Depends(get_db)):
-    # Find user in db
-    user = db.get(User, email)
-
-    # Change email
-    user.username = username_to
+    # If user wants to swith email & it is not the same as already in place
+        if user_update.email is not None and user_update.email != user.email:
+            existing_email = db.query(User).filter(func.lower(User.email) == user_update.email.lower()).first()
+            # Check if new email is already in use
+            if existing_email:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
+    
+    # Update necessary
+    if user_update.username is not None:
+        user.username = user_update.username
+    if user_update.email is not None:
+        user.email = user_update.email.lower()
 
     # Update table with changes
     db.commit()
