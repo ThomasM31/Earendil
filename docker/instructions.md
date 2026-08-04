@@ -9,3 +9,4 @@
 - Check images with: ```docker images```
 - Check containers with: ```docker ps```
 - Check database with ```docker compose -f docker/earendil.yaml exec db psql -U research_user -d Earendil``` -> check ```\dt``` + ```\d table-name``` to show info
+- Check for env. variables ```docker compose -f docker/earendil.yaml config```

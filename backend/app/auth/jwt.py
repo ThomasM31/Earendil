@@ -1,9 +1,13 @@
 from datetime import datetime, timedelta, UTC
 from jose import jwt
+import os
+from dotenv import load_dotenv
 
-SECRET_KEY = "change-this-later"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+# Access SECRET_KEY from .env
+load_dotenv()
+secret_key = os.getenv("SECRET_KEY")
+algorithm = os.getenv("ALGORITHM")
+access_token_expire_minutes = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 def create_access_token(data: dict, time_to_expire_minutes: int | None = None):
 
@@ -12,24 +16,28 @@ def create_access_token(data: dict, time_to_expire_minutes: int | None = None):
     if time_to_expire_minutes:
         expire = datetime.now(UTC) + timedelta(minutes=time_to_expire_minutes)
     else:
-        expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(UTC) + timedelta(minutes=access_token_expire_minutes)
 
     to_encode.update({"exp": expire})
 
     encoded_jwt = jwt.encode(
         to_encode,
-        SECRET_KEY,
-        algorithm=ALGORITHM
+        secret_key,
+        algorithm=algorithm
     )
 
     return encoded_jwt
 
-#def verify_access_token(token: str) -> str | None:
+def verify_access_token(token: str) -> str | None:
     """
         Verify a JWT access token and return subject (username) if valid
     """
-    #try:
-    #    payload = jwt.decode(
-    #        token,
-    #        settings
-    #    )
+    try:
+        payload = jwt.decode(
+            token=token,
+            key=secret_key,
+            algorithms=[algorithm],
+            options={"require": ["exp", "sub"]}
+        )
+    except:
+        pass
