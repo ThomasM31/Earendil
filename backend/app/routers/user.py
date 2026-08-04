@@ -24,8 +24,27 @@ def get_users(db: Session = Depends(get_db)):
     
     return users
 
+@router.get("/me", response_model=UserPrivate)
+def get_current_user(token: str, db: Session = Depends(get_db)):
+    """
+        Get currently authorized user, validates token, gets user information
+    """
+    username = verify_access_token(token)
+    if username is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token")
+
+    user = db.query(User).filter(User.username == username)
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+
+    return user
+
 @router.get("/{username}", response_model=UserPublic)
 def get_user(username: str, db: Session = Depends(get_db)):
+    """
+        Find certain user
+    """
     user = db.query(User).filter(User.username == username).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -37,6 +56,9 @@ def create_user(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
+    """
+        Create a new user and add to database
+    """
     # Check for existing user, not case sensitive
     existing_user = db.query(User).filter(func.lower(User.username) == user_data.username.lower())
     if existing_user:
@@ -63,6 +85,9 @@ def create_user(
 # Define DELETE-functionality
 @router.delete("/", response_model=str)
 def delete_all_users(db: Session = Depends(get_db)):
+    """
+        WARNING: Removes every single user from the database
+    """
     users = get_users(db)
     for user in users:
         db.delete(user)
@@ -73,6 +98,9 @@ def delete_all_users(db: Session = Depends(get_db)):
 
 @router.delete("/{username}", response_model=str)
 def delete_user(username: str, db:Session = Depends(get_db)):
+    """
+        Delete specific user from database
+    """
     user = db.query(User).filter(User.username == username).first()
 
     if user:

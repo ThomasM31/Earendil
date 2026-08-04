@@ -36,7 +36,7 @@ def verify_access_token(token: str) -> str | None:
     """
     try:
         payload = jwt.decode(
-            token=token,
+            jwt=token,
             key=secret_key,
             algorithms=[algorithm],
             options={"require": ["exp", "sub"]}
