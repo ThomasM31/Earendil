@@ -38,6 +38,7 @@ class UserLogin(BaseModel):
     )
 
 class UserPublic(BaseModel):
+    id: int
     username: str
     name: Optional[str] = None
     date_created: dt.datetime

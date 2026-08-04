@@ -23,7 +23,8 @@ def get_users(db: Session = Depends(get_db)):
     """
     users = db.query(User).all()
     if not users:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No users found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                            detail="No users found")
     
     return users
 
@@ -32,25 +33,28 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
     """
         Get currently authorized user, validates token, gets user information
     """
-    username = verify_access_token(token)
-    if username is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token")
+    user_id = verify_access_token(token)
+    if user_id is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
+                            detail="Invalid or expired token")
 
-    user = db.query(User).filter(User.username == username)
+    user = db.query(User).filter(User.username == user_id)
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
+                            detail="User not found")
 
     return user
 
-@router.get("/{username}", response_model=UserPublic)
-def get_user(username: str, db: Session = Depends(get_db)):
+@router.get("/{user_id}", response_model=UserPublic)
+def get_user(user_id: str, db: Session = Depends(get_db)):
     """
         Find certain user
     """
-    user = db.query(User).filter(User.username == username).first()
+    user = db.query(User).filter(User.user_id == user_id).first()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, 
+                            detail="User not found")
     return user
     
 # Define POST-functionality
@@ -65,11 +69,13 @@ def create_user(
     # Check for existing user, not case sensitive
     existing_user = db.query(User).filter(func.lower(User.username) == user_data.username.lower())
     if existing_user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
+                            detail="Username already exists")
 
     existing_email = db.query(User).filter(func.lower(User.email) == user_data.email.lower())
     if existing_email:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
+                            detail="Email already exists")
         
     # Create actual user with essential information, hash password
     new_user = User(email=user_data.email.lower(),
@@ -83,6 +89,7 @@ def create_user(
     db.commit()
     db.refresh(new_user)
 
+    user_return = UserPrivate()
     return new_user
 
 # Define DELETE-functionality
@@ -99,22 +106,23 @@ def delete_all_users(db: Session = Depends(get_db)):
 
     return "All users deleted!!!"
 
-@router.delete("/{username}", response_model=str)
-def delete_user(username: str, db:Session = Depends(get_db)):
+@router.delete("/{user_id}", response_model=str)
+def delete_user(user_id: str, db:Session = Depends(get_db)):
     """
         Delete specific user from database
     """
-    user = db.query(User).filter(User.username == username).first()
+    user = db.query(User).filter(User.username == user_id).first()
 
     if user:
         db.delete(user)
         db.commit()
     else:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, 
+                            detail="User not found")
     
 # Define PUT-functionality
-@router.patch("/{username}")
-def update_user(username: str, 
+@router.patch("/{user_id}")
+def update_user(user_id: str, 
                 user_update: UserUpdate,
                 db: Session = Depends(get_db)):
     """
@@ -122,9 +130,10 @@ def update_user(username: str,
     """
 
     # Find user in db
-    user = db.query(User).filter(func.lower(User.username) == username.lower()).first()
+    user = db.query(User).filter(func.lower(User.username) == user_id.lower()).first()
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                            detail="User not found")
 
     # If user wants to switch to username or already they already have 
     if user_update.username.lower() != user.username.lower() or user_update.email.lower() != user.email.lower():
