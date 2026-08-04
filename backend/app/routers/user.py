@@ -84,13 +84,19 @@ def create_user(
                 name=user.name, 
                 hashed_password=hash_password(user.password))
 
-    # Att user to table
-    db.add(new_user)
     # Update table with changes
+    db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
-    return new_user
+    # Create to hide password
+    return_user = UserPrivate(id=new_user.id,
+                              username=new_user.username,
+                              email=new_user.email,
+                              name=new_user.name,
+                              date_created=new_user.date_created)
+
+    return return_user
 
 # Define DELETE-functionality
 @router.delete("/", response_model=str)
