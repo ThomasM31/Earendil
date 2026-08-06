@@ -1,3 +1,6 @@
+from datetime import timedelta
+import os
+from dotenv import load_dotenv
 # FastAPI
 from fastapi import HTTPException, Depends, status, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
@@ -6,14 +9,18 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func, select
 # Internal
 from app.models.user import User
+from app.schemas.user import Token
 from app.db.database import get_db
-from app.schemas.user import UserCreate, UserPublic, UserPrivate, UserUpdate
-from app.auth.security import hash_password, verify_password
+from app.schemas.user import UserCreate, UserPublic, UserPrivate, UserUpdate, UserLogin
+from app.auth.security import hash_password, verify_password, oauth2_scheme
 from app.auth.jwt import create_access_token, verify_access_token
-from datetime import timedelta
 
 router = APIRouter(prefix="/users", 
                    tags=["Users"])
+
+# Access environment variables
+load_dotenv()
+access_token_expire_minutes = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 # Define GET-functionality
 @router.get("/", response_model=list[UserPrivate])
@@ -56,6 +63,23 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, 
                             detail="User not found")
     return user
+
+@router.post("/token", response_model=Token)
+def login_for_access_token(user_data: UserLogin, db: Session = Depends(get_db)):
+    # Look up user by username (case-insensitive)
+    user = db.query(User).filter(func.lower(User.username) == user_data.username).first()
+
+    # Verify user exists and password is correct
+    if not user or not verify_password(user_data.password, user.hashed_password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Incorrect username or password")
+
+    # Create access token with user id as subject
+    access_token_expires = timedelta(minutes=access_token_expire_minutes)
+    access_token = create_access_token(data={"sub": str(user.id)}, expires_delta=access_token_expires)
+
+    return Token(access_token=access_token, token_type="bearer")
+
     
 # Define POST-functionality
 @router.post("/register", status_code=status.HTTP_201_CREATED)
