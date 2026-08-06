@@ -3,7 +3,7 @@ uvicorn
 pydantic
 SQLAlchemy
 psycopg2-binary
-#python-jose[cryptography]
+pydantic-settings
 python-multipart
 pwdlib[argon2]
 
