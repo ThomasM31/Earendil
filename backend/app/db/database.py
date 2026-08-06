@@ -1,9 +1,11 @@
+# Internal
 from app.config import settings
+# SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 # Create engine & session, acts as database representation 
-engine = create_engine(settings.database_url)
+engine = create_engine(url=settings.database_url)
 SessionLocal = sessionmaker(autoflush=False, bind=engine)
 
 # 
