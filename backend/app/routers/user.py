@@ -45,12 +45,25 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                             detail="Invalid or expired token")
 
-    user = db.query(User).filter(User.id == user_id)
+    # Try to convert to int, defensive against bad JWT
+    try:
+        user_id_int = int(user_id)
+    except:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Invalid or expired token")
 
+    user = db.query(User).filter(User.id == user_id_int).first()
+
+    # Check if user exists
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                             detail="User not found")
 
+    """return_user = UserPrivate(id=user.id,
+                                username=user.username,
+                                email=user.email,
+                                name=user.name,
+                                date_created=user.date_created)"""
     return user
 
 @router.get("/{user_id}", response_model=UserPublic)
@@ -58,10 +71,11 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
     """
         Find certain user
     """
-    user = db.query(User).filter(User.user_id == user_id).first()
+    user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, 
                             detail="User not found")
+    
     return user
 
 @router.post("/token", response_model=Token)
@@ -152,9 +166,7 @@ def delete_user(user_id: str, db:Session = Depends(get_db)):
     
 # Define PUT-functionality
 @router.patch("/{user_id}")
-def update_user(user_id: str, 
-                user_update: UserUpdate,
-                db: Session = Depends(get_db)):
+def update_user(user_id: str, user_update: UserUpdate, db: Session = Depends(get_db)):
     """
         Update either email or password for user
     """
