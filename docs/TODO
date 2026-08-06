@@ -1,15 +1,16 @@
 Database:
 - Hur ska databasen se ut? Lagra artiklar som text???
-- Database migration (Alembic?)
+- 
 
 Backend:
 - Multi-stage build för dockerfile p.g.a. flera images?
 - async??
 - Fix login with choice of email or username
 - User can only access their own data (username, password etc.)
+- reset_password() functionality
 
 Frontend:
 - Skapa frontend (React)
 - Få in frontend i .yaml
 
-CURRENT: Database Migration
+CURRENT: React?
