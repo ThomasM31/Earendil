@@ -1,6 +1,7 @@
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
+from typing import Annotated
 # FastAPI
 from fastapi import HTTPException, Depends, status, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
@@ -36,7 +37,8 @@ def get_users(db: Session = Depends(get_db)):
     return users
 
 @router.get("/me", response_model=UserPrivate)
-def get_current_user(token: str, db: Session = Depends(get_db)):
+def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], 
+                     db: Session = Depends(get_db)):
     """
         Get currently authorized user, validates token, gets user information
     """
@@ -59,11 +61,6 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                             detail="User not found")
 
-    """return_user = UserPrivate(id=user.id,
-                                username=user.username,
-                                email=user.email,
-                                name=user.name,
-                                date_created=user.date_created)"""
     return user
 
 @router.get("/{user_id}", response_model=UserPublic)
@@ -79,9 +76,10 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
     return user
 
 @router.post("/token", response_model=Token)
-def login_for_access_token(user_data: UserLogin, db: Session = Depends(get_db)):
+def login_for_access_token(user_data: Annotated[OAuth2PasswordRequestForm, Depends()], 
+                           db: Session = Depends(get_db)):
     # Look up user by username (case-insensitive)
-    user = db.query(User).filter(func.lower(User.username) == user_data.username).first()
+    user = db.query(User).filter(func.lower(User.username) == user_data.username.lower()).first()
 
     # Verify user exists and password is correct
     if not user or not verify_password(user_data.password, user.hashed_password):
@@ -89,7 +87,7 @@ def login_for_access_token(user_data: UserLogin, db: Session = Depends(get_db)):
                             detail="Incorrect username or password")
 
     # Create access token with user id as subject
-    access_token_expires = timedelta(minutes=access_token_expire_minutes)
+    access_token_expires = timedelta(minutes=int(access_token_expire_minutes))
     access_token = create_access_token(data={"sub": str(user.id)}, expires_delta=access_token_expires)
 
     return Token(access_token=access_token, token_type="bearer")

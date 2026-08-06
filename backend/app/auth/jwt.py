@@ -9,14 +9,14 @@ secret_key = os.getenv("SECRET_KEY")
 algorithm = os.getenv("ALGORITHM")
 access_token_expire_minutes = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
-def create_access_token(data: dict, expires_time: timedelta | None = None):
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
     """
         Create access token from username
     """
     to_encode = data.copy()
 
-    if expires_time:
-        expire = datetime.now(UTC) + timedelta(minutes=expires_time)
+    if expires_delta:
+        expire = datetime.now(UTC) + expires_delta
     else:
         expire = datetime.now(UTC) + timedelta(minutes=int(access_token_expire_minutes))
 
