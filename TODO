@@ -6,6 +6,7 @@ Backend:
 - Multi-stage build för dockerfile p.g.a. flera images?
 - async??
 - Fix login with choice of email or username
+- User can only access their own data (username, password etc.)
 
 Frontend:
 - Skapa frontend (React)
