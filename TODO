@@ -12,4 +12,4 @@ Frontend:
 - Skapa frontend (React)
 - Få in frontend i .yaml
 
-CURRENT: User Authentication + Authorization (JWT)
+CURRENT: Database Migration
