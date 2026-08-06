@@ -11,6 +11,7 @@
 - Check database with ```docker compose -f docker/earendil.yaml exec db psql -U research_user -d Earendil``` 
 -> check ```\dt``` + ```\d table-name``` to show info
 - Check for env. variables ```docker compose -f docker/earendil.yaml config```
+- Check for container content: ```docker compose -f .\docker\earendil.yaml exec backend OR db ls```
 
 ### Alembic
 1. Start container
