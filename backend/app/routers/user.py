@@ -1,6 +1,5 @@
 from datetime import timedelta
 import os
-from dotenv import load_dotenv
 from typing import Annotated
 # FastAPI
 from fastapi import HTTPException, Depends, status, APIRouter
@@ -10,18 +9,15 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func, select
 # Internal
 from app.models.user import User
+from app.config import settings
 from app.schemas.user import Token
 from app.db.database import get_db
-from app.schemas.user import UserCreate, UserPublic, UserPrivate, UserUpdate, UserLogin
+from app.schemas.user import UserCreate, UserPublic, UserPrivate, UserUpdate
 from app.auth.security import hash_password, verify_password, oauth2_scheme
 from app.auth.jwt import create_access_token, verify_access_token
 
 router = APIRouter(prefix="/users", 
                    tags=["Users"])
-
-# Access environment variables
-load_dotenv()
-access_token_expire_minutes = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 # Define GET-functionality
 @router.get("/", response_model=list[UserPrivate])
@@ -87,7 +83,7 @@ def login_for_access_token(user_data: Annotated[OAuth2PasswordRequestForm, Depen
                             detail="Incorrect username or password")
 
     # Create access token with user id as subject
-    access_token_expires = timedelta(minutes=int(access_token_expire_minutes))
+    access_token_expires = timedelta(minutes=int(settings.access_token_expire_minutes))
     access_token = create_access_token(data={"sub": str(user.id)}, expires_delta=access_token_expires)
 
     return Token(access_token=access_token, token_type="bearer")
