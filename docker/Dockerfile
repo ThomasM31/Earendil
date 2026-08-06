@@ -1,4 +1,4 @@
-# Enables commands from
+# Enables commands from, change to specific version??
 FROM python:latest
 
 # Add author info
@@ -7,9 +7,11 @@ LABEL org.opencontainers.image.authos="thomath@chalmers.se"
 # Set working directory (of container)
 WORKDIR /app
 
-# Copy local files into container (copy local /app to container . which is /app from WORKDIR)
-COPY app/ .
-COPY ../venv /app/
+# Copy local files into container
+COPY . .
+COPY alembic ./alembic
+COPY alembic.ini .
+COPY ../requirements.txt .
 
 # Create venv. in container
 RUN python -m venv /env
@@ -18,9 +20,8 @@ RUN python -m venv /env
 ENV VIRTUAL_ENV=/env
 ENV PATH=/env/bin:$PATH
 
-# Add reqs to container + execute
-ADD ../requirements.txt /app/requirements.txt
-RUN pip install -r /app/requirements.txt
+# Install packages in reqs.
+RUN pip install -r requirements.txt
 
 # What to run when running container from image ["program", "file"] (Path in WORKDIR)
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
