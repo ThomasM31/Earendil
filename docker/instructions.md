@@ -14,5 +14,4 @@
 - Check for container content: ```docker compose -f .\docker\earendil.yaml exec backend OR db ls```
 
 ### Alembic
-1. Start container
-2. Run ```?```
+- Run ```docker compose -f docker/earendil.yaml exec backend alembic revision --autogenerate -m "schema_name"```
