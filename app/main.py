@@ -4,8 +4,8 @@ import uvicorn
 from fastapi import FastAPI, Depends, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
-from app.db.database import engine, Base, get_db
-from app.routers import user
+from db.database import engine, Base, get_db
+from routers import user
 # SQLAlchemy
 from sqlalchemy.orm import Session
 from sqlalchemy import text

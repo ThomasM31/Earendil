@@ -5,10 +5,10 @@ FROM python:latest
 LABEL org.opencontainers.image.authos="thomath@chalmers.se"
 
 # Set working directory (of container)
-WORKDIR /backend
+WORKDIR /app
 
 # Copy local files into container
-COPY backend/ /backend/
+COPY app/ /app/
 
 # Create venv. in container
 RUN python -m venv /env
@@ -18,7 +18,7 @@ ENV VIRTUAL_ENV=/env
 ENV PATH=/env/bin:$PATH
 
 # Add reqs to container + execute
-ADD ../backend/requirements.txt /app/requirements.txt
+ADD ../requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
 
 # What to run when running container from image ["program", "file"] (Path in WORKDIR)
