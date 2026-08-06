@@ -3,7 +3,7 @@ import jwt
 import os
 from dotenv import load_dotenv
 
-# Access SECRET_KEY from .env
+# Access variables from .env
 load_dotenv()
 secret_key = os.getenv("SECRET_KEY")
 algorithm = os.getenv("ALGORITHM")
