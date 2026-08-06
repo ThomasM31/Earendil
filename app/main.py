@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 
 # Setup the database tables & API
-#Base.metadata.create_all(bind=engine)
+#Base.metadata.create_all(bind=engine) # Can be run from here without Alembic
 app = FastAPI()
 
 origins = [
