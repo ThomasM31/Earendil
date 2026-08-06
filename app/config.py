@@ -3,8 +3,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env", #Path?
+        env_file=".env",
         env_file_encoding="utf-8",
+        extra="ignore"
     )
 
     database_url: str
@@ -15,4 +16,4 @@ class Settings(BaseSettings):
 
     frontend_url: str = "http://localhost/8000"
 
-settings = Settings() # type: ignore[call-arg] # Loaded from .env file
+settings = Settings() # Loaded from .env file

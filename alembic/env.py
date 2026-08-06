@@ -5,9 +5,10 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from backend.app.models import user, document
-from backend.app.config import settings
-from backend.app.db import Base
+from app.models import user
+from app.models import document
+from app.config import settings
+from app.db.database import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
