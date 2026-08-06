@@ -6,6 +6,5 @@ psycopg2-binary
 pydantic-settings
 python-multipart
 pwdlib[argon2]
-
+alembic
 pyjwt
-#pydantic-settings

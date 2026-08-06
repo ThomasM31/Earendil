@@ -10,8 +10,9 @@ from app.routers import user, auth
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 
+
 # Setup the database tables & API
-Base.metadata.create_all(bind=engine)
+#Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
