@@ -8,7 +8,7 @@
 <a href="https://github.com/ThomasM31/Earendil/pulls"><img src="https://img.shields.io/github/issues-pr/ThomasM31/Earendil" alt="Pull Requests Badge"/></a>
 <a href="https://github.com/ThomasM31/Earendil/issues"><img src="https://img.shields.io/github/issues/ThomasM31/Earendil" alt="Issues Badge"/></a>
 
-An LLM-powered research assistant application. Upload papers and ask questions to recieve cited answers. (NotebookLM/ChatPDF-esque)
+An LLM-powered research assistant application. Upload papers and ask questions to recieve cited answers. (NotebookLM/ChatPDF-esque) Simply create an account, upload your research papers (PDF), ask questions about the papers and recieve answers with citations. 
 <!--- 
 [![Tests](https://github.com/ThomasM31/Earendil/workflows/Test/badge.svg)](https://github.com/ThomasM31/Earendil/actions?query=workflow%3ATest)
 --->
@@ -16,38 +16,17 @@ An LLM-powered research assistant application. Upload papers and ask questions t
 </div>
 
 ### STACK: 
-- FASTapi REST API
-  - PostGreSQL for chats/users
+- Python
+- FastAPI
+  - PostGreSQL for chats/users (with Alembic for migration)
   - Azure for PDF storage 
   - JWT for authentication 
 - React for frontend
-- Docker 
+- Docker for containerization
 - GitHub actions for CI/CD
 
-### GOAL:
-A web application where users can:
-- Sign in
-- Upload research papers (PDFs)
-- Ask questions about the uploaded papers
-- Receive answers with citations
-- View previous chats
-- Manage their document library
-
-### NOTES:
-            Document Processing Service
-
-                         │
-
-          PDF → Text → Chunks → Embeddings
-
-                         │
-
-            pgvector (or Azure AI Search)
-
-                         │
-
-                OpenAI / Azure OpenAI
-
-                         │
-
-                 Answer + Citations
+<!--- 
+Document Processing Service -> PDF → Text → Chunks → Embeddings
+-> pgvector (or Azure AI Search) -> OpenAI / Azure OpenAI
+-> Answer + Citations
+--->
