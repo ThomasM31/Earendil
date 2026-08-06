@@ -7,8 +7,9 @@ LABEL org.opencontainers.image.authos="thomath@chalmers.se"
 # Set working directory (of container)
 WORKDIR /app
 
-# Copy local files into container
-COPY app/ /app/
+# Copy local files into container (copy local /app to container . which is /app from WORKDIR)
+COPY app/ .
+COPY ../venv /app/
 
 # Create venv. in container
 RUN python -m venv /env
@@ -22,4 +23,4 @@ ADD ../requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
 
 # What to run when running container from image ["program", "file"] (Path in WORKDIR)
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

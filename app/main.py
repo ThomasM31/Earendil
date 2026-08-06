@@ -5,13 +5,10 @@ from fastapi import FastAPI, Depends, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 # Internal
 from db.database import engine, Base, get_db
-from routers import user
+from routers import user, auth
 # SQLAlchemy
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-
-from app.routers import auth
-
 
 # Setup the database tables & API
 #Base.metadata.create_all(bind=engine)
