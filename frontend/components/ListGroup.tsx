@@ -8,12 +8,9 @@ interface Props {
     onSelectItem: (item: string) => void;
 }
 
-function ListGroup({items, heading, onSelectItem}: Props) {    
+function ListGroup({items, heading, onSelectItem}: Props) {
     // Hook
     const [selectedIndex, setSelectedIndex] = useState(-1);
-
-    // Event handler
-    //const handleClick = (event: MouseEvent) => console.log(event);
 
     /**IF statement */
     const getMessage = () => {items.length == 0 ? <p>No items found</p>: null};
