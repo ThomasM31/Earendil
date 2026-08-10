@@ -11,7 +11,6 @@ Backend:
 
 Frontend:
 - Skapa frontend (React)
-- Få in frontend i .yaml
 
 Docker:
 - Separera till Dockerfile.prod och Dockerfile.dev 
