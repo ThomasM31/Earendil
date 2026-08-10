@@ -18,3 +18,6 @@ NOTE: Use when modifying table in any way
 1. Create migration i.e. table update with ```docker compose -f docker/earendil.yaml exec backend alembic revision --autogenerate -m "schema_name"```
 2. Apply with ```docker compose -f docker/earendil.yaml exec backend alembic upgrade head```
 - Check old schemas with ```docker compose -f docker/earendil.yaml exec backend alembic history``` (can also check in alembic/versions)
+
+### Frontend
+- Run frontend only with ```npm run dev``` from /frontend
