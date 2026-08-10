@@ -13,4 +13,7 @@ Frontend:
 - Skapa frontend (React)
 - Få in frontend i .yaml
 
-CURRENT: React?
+Docker:
+- Separera till Dockerfile.prod och Dockerfile.dev 
+
+CURRENT: Frontend
