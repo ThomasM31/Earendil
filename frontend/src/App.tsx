@@ -2,18 +2,23 @@
 import Alert from "../components/Alert"; 
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
+import {api} from "../api/api";
 
 function App() {
   // let items = ["New York","San Francisco","Tokyo","London","Paris"];
   // <ListGroup items={items} heading="Cities" onSelectItem={handleSelectItem}/>
   const [alertVisible, setAlertVisibility] = useState(false);
 
-  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8000/health")
-    .then((response) => response.json())
-    .then((data) => setMessage(data.status));
+    api.get("/health")
+    //.then((data) => setMessage(data.status))
+    .then((response) => {
+      console.log(response.data);
+      setStatus(response.data.status);
+    })
+    .catch(error => console.log(error));
   }, []);
   
   // Event handler
@@ -22,7 +27,7 @@ function App() {
   return (
     <div>
       <h1>Earendil</h1>
-      <p>Backend status: {message}</p>
+      <p>Backend status: {status}</p>
       <div>
         <Button color="primary" onClick={() => console.log("Clicked primary button")}>
           My Primary Button
