@@ -15,4 +15,7 @@ Frontend:
 Docker:
 - Separera till Dockerfile.prod och Dockerfile.dev 
 
+Generellt:
+- Minska storlek på container?? Tar väldigt lång tid att starta
+
 CURRENT: Frontend

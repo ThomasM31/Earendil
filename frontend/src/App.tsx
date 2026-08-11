@@ -1,22 +1,28 @@
-import ListGroup from "../components/ListGroup";
+//import ListGroup from "../components/ListGroup";
 import Alert from "../components/Alert"; 
 import Button from "../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  let items = ["New York","San Francisco","Tokyo","London","Paris"];
+  // let items = ["New York","San Francisco","Tokyo","London","Paris"];
+  // <ListGroup items={items} heading="Cities" onSelectItem={handleSelectItem}/>
   const [alertVisible, setAlertVisibility] = useState(false);
+
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:8000/health")
+    .then((response) => response.json())
+    .then((data) => setMessage(data.status));
+  }, []);
   
   // Event handler
-  const handleSelectItem = (item: string) => {
-    console.log(item)
-  }
+  //const handleSelectItem = (item: string) => {console.log(item)}
 
   return (
     <div>
-      {alertVisible == true ? <Alert onClose={() => setAlertVisibility(false)}>
-        <strong>WARNING</strong> This is a crazy alert
-        </Alert> : null}
+      <h1>Earendil</h1>
+      <p>Backend status: {message}</p>
       <div>
         <Button color="primary" onClick={() => console.log("Clicked primary button")}>
           My Primary Button
@@ -31,9 +37,11 @@ function App() {
           My Danger Button
         </Button>
       </div>
-      <ListGroup items={items} heading="Cities" onSelectItem={handleSelectItem}/>
+        {alertVisible == true ? <Alert onClose={() => setAlertVisibility(false)}>
+        <strong>WARNING</strong> This is a crazy alert
+        </Alert> : null}
     </div>  
-  )
+  );
 }
 
 export default App; 
