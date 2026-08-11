@@ -10,7 +10,8 @@ Backend:
 - reset_password() functionality
 
 Frontend:
-- Skapa frontend (React)
+- Styling
+- 
 
 Docker:
 - Separera till Dockerfile.prod och Dockerfile.dev 
@@ -18,4 +19,4 @@ Docker:
 Generellt:
 - Minska storlek på container?? Tar väldigt lång tid att starta
 
-CURRENT: Frontend
+CURRENT: Bygg login-page

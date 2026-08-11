@@ -1,7 +1,8 @@
 import datetime as dt
 from sqlalchemy.orm import Mapped, mapped_column
 from app.db.database import Base
-from typing import Optional
+from app.models.user import User
+from sqlalchemy import ForeignKey
 
 class Document(Base):
     """
@@ -10,9 +11,9 @@ class Document(Base):
     __tablename__ = "documents"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     filename: Mapped[str] = mapped_column(index=True)
-    owner_id: Mapped[int] = mapped_column(index=True)
+    owner_id: Mapped[int] = mapped_column(ForeignKey(User.id), index=True)
     file_path: Mapped[str] = mapped_column(nullable=False)
-    status: Mapped[str] = mapped_column(index=True)
+    status: Mapped[str] = mapped_column()
     date_created: Mapped[dt.datetime] = mapped_column(index=True, default=str(dt.datetime.now(dt.timezone.utc)))
 
 """
