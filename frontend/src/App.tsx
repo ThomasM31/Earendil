@@ -5,9 +5,9 @@ import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import {api} from "../api/api";
 
 // Internal
-import Dashboard from "../components/Dashboard/Dashboard";
-import Preferences from "../components/Preferences/Preferences";
-import Home from "../components/Home/Home";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import Preferences from "../pages/Preferences/Preferences";
+import Home from "../pages/Home/Home";
 
 import Alert from "../components/Alert"; 
 import Button from "../components/Button";
