@@ -1,8 +1,17 @@
 //import ListGroup from "../components/ListGroup";
+// External
+import { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
+import {api} from "../api/api";
+
+// Internal
+import Dashboard from "../components/Dashboard/Dashboard";
+import Preferences from "../components/Preferences/Preferences";
+import Home from "../components/Home/Home";
+
 import Alert from "../components/Alert"; 
 import Button from "../components/Button";
-import { useEffect, useState } from "react";
-import {api} from "../api/api";
+
 
 function App() {
   // let items = ["New York","San Francisco","Tokyo","London","Paris"];
@@ -25,10 +34,21 @@ function App() {
   //const handleSelectItem = (item: string) => {console.log(item)}
 
   return (
-    <div>
+    <div className="wrapper">
       <h1>Earendil</h1>
       <p>Backend status: {status}</p>
-      <div>
+      <BrowserRouter>
+        <nav>
+          <Link to={"/"}>Home</Link>{" "}
+        </nav>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/preferences" element={<Preferences />} />  
+          <Route path="*" element={<p>Path not resolved</p>} />
+        </Routes>  
+      </BrowserRouter>
+      {/*<div>
         <Button color="primary" onClick={() => console.log("Clicked primary button")}>
           My Primary Button
         </Button>
@@ -44,8 +64,8 @@ function App() {
       </div>
         {alertVisible == true ? <Alert onClose={() => setAlertVisibility(false)}>
         <strong>WARNING</strong> This is a crazy alert
-        </Alert> : null}
-    </div>  
+        </Alert> : null} */}
+    </div>
   );
 }
 
