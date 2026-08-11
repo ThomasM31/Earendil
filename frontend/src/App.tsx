@@ -1,48 +1,31 @@
 //import ListGroup from "../components/ListGroup";
 // External
-import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
-import {api} from "../api/api";
 
 // Internal
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Preferences from "../pages/Preferences/Preferences";
 import Home from "../pages/Home/Home";
-
-import Alert from "../components/Alert"; 
-import Button from "../components/Button";
-
+import Login from "../pages/Login/Login";
+import "./App.css";
 
 function App() {
-  // let items = ["New York","San Francisco","Tokyo","London","Paris"];
-  // <ListGroup items={items} heading="Cities" onSelectItem={handleSelectItem}/>
-  const [alertVisible, setAlertVisibility] = useState(false);
-
-  const [status, setStatus] = useState("");
-
-  useEffect(() => {
-    api.get("/health")
-    //.then((data) => setMessage(data.status))
-    .then((response) => {
-      console.log(response.data);
-      setStatus(response.data.status);
-    })
-    .catch(error => console.log(error));
-  }, []);
-  
   // Event handler
   //const handleSelectItem = (item: string) => {console.log(item)}
 
   return (
     <div className="wrapper">
       <h1>Earendil</h1>
-      <p>Backend status: {status}</p>
       <BrowserRouter>
         <nav>
           <Link to={"/"}>Home</Link>{" "}
+          <Link to={"/login"}>Login</Link>{" "}
+          <Link to={"/dashboard"}>Dashboard</Link>{" "}
+          <Link to={"/preferences"}>Preferences</Link>{" "}
         </nav>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/preferences" element={<Preferences />} />  
           <Route path="*" element={<p>Path not resolved</p>} />
